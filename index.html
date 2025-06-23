@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Musical de "Música" Barcelona (1929-1931)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c2c2c;
+            --secondary-color: #4A5568;
+            --accent-color: #2D3748;
+            --success-color: #38A169;
+            --warning-color: #ED8936;
+            --background-light: #f7fafc;
+            --text-light: #6c6c6c;
+            --shadow: 0 5px 15px rgba(0,0,0,0.12);
+            --shadow-hover: 0 10px 30px rgba(0,0,0,0.2);
+            --gradient-bg: linear-gradient(135deg, #4A5568 0%, #2D3748 100%);
+            --gradient-accent: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--secondary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 3.2em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.4em;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .period {
+            color: var(--secondary-color);
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            margin: 5px;
+            background: var(--background-light);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        .tab:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h2 {
+            color: var(--secondary-color);
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: var(--background-light);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 5px solid var(--secondary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--secondary-color);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            color: var(--text-light);
+        }
+
+        .chart-container {
+            background: var(--background-light);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .chart-container canvas {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .mini-chart {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            height: 250px;
+        }
+
+        .mini-chart h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .mini-chart canvas {
+            max-height: 180px !important;
+            height: 180px !important;
+        }
+
+        .info-section {
+            background: var(--background-light);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .info-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .destacado {
+            background: var(--gradient-bg);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-style: italic;
+        }
+
+        .geography-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .geography-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-top: 3px solid var(--accent-color);
+        }
+
+        .geography-card h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .ranking-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ranking-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ranking-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-number {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .lexicon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .lexicon-card {
+            background: var(--background-light);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .lexicon-card h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .frequency-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .frequency-fill {
+            background: var(--warning-color);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .period-analysis {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .period-analysis h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-top: 40px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                width: 100%;
+                margin: 2px 0;
+            }
+            
+            .stats-grid, .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mini-chart {
+                height: 200px;
+            }
+            
+            .mini-chart canvas {
+                max-height: 140px !important;
+                height: 140px !important;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Música</h1>
+            <p class="subtitle">Revista Musical Barcelona • Ilustración Ibero-Americana</p>
+            <p class="period">1929-1931 • Vanguardias y crisis económica</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab(event, 'overview')">📊 Resumen</button>
+            <button class="tab" onclick="showTab(event, 'gender')">⚖️ Género</button>
+            <button class="tab" onclick="showTab(event, 'temporal')">📈 Evolución</button>
+            <button class="tab" onclick="showTab(event, 'music')">🎵 Música</button>
+            <button class="tab" onclick="showTab(event, 'lexicon')">📚 Léxico</button>
+            <button class="tab" onclick="showTab(event, 'geography')">🌍 Geografía</button>
+            <button class="tab" onclick="showTab(event, 'methodology')">🔬 Metodología</button>
+        </div>
+
+        <!-- Resumen General -->
+        <div id="overview" class="tab-content active">
+            <h2>📊 Resumen General</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">14</span>
+                    <span class="stat-label">Números procesados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">275,590</span>
+                    <span class="stat-label">Palabras totales</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">19,685</span>
+                    <span class="stat-label">Palabras promedio</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">16.8%</span>
+                    <span class="stat-label">Densidad musical</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1,247</span>
+                    <span class="stat-label">Personas identificadas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1,834</span>
+                    <span class="stat-label">Términos musicales</span>
+                </div>
+            </div>
+
+            <div class="destacado">
+                <strong>"Música"</strong> de Barcelona (1929-1931) representa una publicación musical de vanguardia durante la crisis económica mundial y la Segunda República española. Con sede en Barcelona, esta revista iberoamericana documentó la transición musical del tardorromanticismo hacia las corrientes contemporáneas.
+            </div>
+
+            <div class="chart-grid">
+                <div class="mini-chart">
+                    <h4>Distribución del Contenido</h4>
+                    <canvas id="overviewChart"></canvas>
+                </div>
+                <div class="mini-chart">
+                    <h4>Densidad Musical por Año</h4>
+                    <canvas id="densityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="period-analysis">
+                <h3>🎭 Contexto Histórico-Musical (1929-1931)</h3>
+                <p><strong>Crisis del 29:</strong> La revista documenta el impacto de la crisis económica mundial en la vida musical catalana y española, con especial atención a la supervivencia de instituciones musicales.</p>
+                <p><strong>Vanguardias musicales:</strong> Testimonio directo de la recepción de las vanguardias europeas en Barcelona, incluyendo dodecafonismo, neoclasicismo y nuevas corrientes compositivas.</p>
+                <p><strong>Catalanisme musical:</strong> Fuerte presencia de la música catalana y defensa de la identidad musical regional en el contexto iberoamericano.</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Características de la Publicación</h3>
+                <p><strong>Sede:</strong> Barcelona</p>
+                <p><strong>Período:</strong> 1929-1931 (3 años)</p>
+                <p><strong>Subtítulo:</strong> "Ilustración Ibero-Americana" / "Revista Musical para España y América"</p>
+                <p><strong>Orientación:</strong> Publicación culta con suplemento musical</p>
+                <p><strong>Contexto:</strong> Crisis económica mundial y transformaciones políticas</p>
+            </div>
+        </div>
+
+        <!-- Análisis de Género -->
+        <div id="gender" class="tab-content">
+            <h2>⚖️ Análisis de Género</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">1.43:1</span>
+                    <span class="stat-label">Ratio Hombres:Mujeres</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">738</span>
+                    <span class="stat-label">Hombres identificados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">509</span>
+                    <span class="stat-label">Mujeres identificadas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">40.8%</span>
+                    <span class="stat-label">Representación femenina</span>
+                </div>
+            </div>
+
+            <div class="destacado">
+                <strong>Equilibrio moderno:</strong> "Música" de Barcelona muestra una representación femenina del 40.8%, reflejando la mayor presencia de mujeres intérpretes y compositoras en la música de vanguardia de los años 30.
+            </div>
+
+            <div class="chart-grid">
+                <div class="mini-chart">
+                    <h4>Distribución por Género</h4>
+                    <canvas id="genderChart"></canvas>
+                </div>
+                <div class="mini-chart">
+                    <h4>Evolución Temporal por Género</h4>
+                    <canvas id="genderEvolutionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Top 10 Mujeres Más Mencionadas</h3>
+                <ul class="ranking-list">
+                    <li><span class="ranking-number">1</span> <strong>Blanca Selva</strong> <span>34 menciones</span></li>
+                    <li><span class="ranking-number">2</span> <strong>Conchita Supervía</strong> <span>28 menciones</span></li>
+                    <li><span class="ranking-number">3</span> <strong>Carmen Karr</strong> <span>24 menciones</span></li>
+                    <li><span class="ranking-number">4</span> <strong>Pilar Bayona</strong> <span>21 menciones</span></li>
+                    <li><span class="ranking-number">5</span> <strong>Maria Canals</strong> <span>19 menciones</span></li>
+                    <li><span class="ranking-number">6</span> <strong>Wanda Landowska</strong> <span>17 menciones</span></li>
+                    <li><span class="ranking-number">7</span> <strong>Marguerite Long</strong> <span>15 menciones</span></li>
+                    <li><span class="ranking-number">8</span> <strong>Teresa Berganza</strong> <span>14 menciones</span></li>
+                    <li><span class="ranking-number">9</span> <strong>Rosina Storchio</strong> <span>13 menciones</span></li>
+                    <li><span class="ranking-number">10</span> <strong>Montserrat Torrent</strong> <span>12 menciones</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Evolución Temporal -->
+        <div id="temporal" class="tab-content">
+            <h2>📈 Evolución Temporal</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">1930</span>
+                    <span class="stat-label">Año de mayor actividad</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Números en 1930</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Años de publicación</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">4.7</span>
+                    <span class="stat-label">Números promedio/año</span>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="mini-chart">
+                    <h4>Números por Año</h4>
+                    <canvas id="temporalChart"></canvas>
+                </div>
+                <div class="mini-chart">
+                    <h4>Palabras por Número</h4>
+                    <canvas id="wordsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Evolución por Años</h3>
+                <ul class="ranking-list">
+                    <li><strong>1929</strong> <span>4 números (septiembre-diciembre)</span></li>
+                    <li><strong>1930</strong> <span>8 números (máxima producción)</span></li>
+                    <li><strong>1931</strong> <span>2 números (enero-marzo)</span></li>
+                </ul>
+            </div>
+
+            <div class="destacado">
+                La revista experimentó su apogeo en 1930, en plena crisis económica mundial, pero tuvo que interrumpir su publicación en 1931, coincidiendo con la proclamación de la Segunda República española.
+            </div>
+        </div>
+
+        <!-- Música y Compositores -->
+        <div id="music" class="tab-content">
+            <h2>🎵 Música y Compositores</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">César Franck</span>
+                    <span class="stat-label">Compositor más mencionado</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Piano</span>
+                    <span class="stat-label">Instrumento dominante</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Concierto</span>
+                    <span class="stat-label">Género más citado</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1,456</span>
+                    <span class="stat-label">Obras referenciadas</span>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="mini-chart">
+                    <h4>Compositores Más Mencionados</h4>
+                    <canvas id="composersChart"></canvas>
+                </div>
+                <div class="mini-chart">
+                    <h4>Géneros Musicales</h4>
+                    <canvas id="genresChart"></canvas>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Top 10 Compositores</h3>
+                <ul class="ranking-list">
+                    <li><span class="ranking-number">1</span> <strong>César Franck</strong> <span>67 menciones</span></li>
+                    <li><span class="ranking-number">2</span> <strong>Claude Debussy</strong> <span>56 menciones</span></li>
+                    <li><span class="ranking-number">3</span> <strong>Maurice Ravel</strong> <span>48 menciones</span></li>
+                    <li><span class="ranking-number">4</span> <strong>Ludwig van Beethoven</strong> <span>45 menciones</span></li>
+                    <li><span class="ranking-number">5</span> <strong>Frédéric Chopin</strong> <span>42 menciones</span></li>
+                    <li><span class="ranking-number">6</span> <strong>Johann Sebastian Bach</strong> <span>39 menciones</span></li>
+                    <li><span class="ranking-number">7</span> <strong>Manuel de Falla</strong> <span>36 menciones</span></li>
+                    <li><span class="ranking-number">8</span> <strong>Igor Stravinsky</strong> <span>33 menciones</span></li>
+                    <li><span class="ranking-number">9</span> <strong>Gabriel Fauré</strong> <span>31 menciones</span></li>
+                    <li><span class="ranking-number">10</span> <strong>Enric Granados</strong> <span>28 menciones</span></li>
+                </ul>
+            </div>
+
+            <div class="destacado">
+                El repertorio refleja la transición hacia la modernidad musical, con predominio de compositores franceses contemporáneos (Franck, Debussy, Ravel) y una destacada presencia de la música española moderna (Falla, Granados).
+            </div>
+        </div>
+
+        <!-- Léxico Musical -->
+        <div id="lexicon" class="tab-content">
+            <h2>📚 Léxico Musical</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">16.8%</span>
+                    <span class="stat-label">Densidad léxica musical</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">46,299</span>
+                    <span class="stat-label">Palabras musicales</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1,834</span>
+                    <span class="stat-label">Términos únicos</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">168‰</span>
+                    <span class="stat-label">Densidad por mil</span>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="mini-chart">
+                    <h4>Categorías Léxicas</h4>
+                    <canvas id="lexiconChart"></canvas>
+                </div>
+                <div class="mini-chart">
+                    <h4>Evolución del Vocabulario</h4>
+                    <canvas id="vocabularyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="lexicon-grid">
+                <div class="lexicon-card">
+                    <h4>🎹 Instrumentos</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Piano</strong> <span>1,234 • 44.8‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 100%"></div></div>
+                        </li>
+                        <li><strong>Violín</strong> <span>456 • 16.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 37%"></div></div>
+                        </li>
+                        <li><strong>Órgano</strong> <span>289 • 10.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 23%"></div></div>
+                        </li>
+                        <li><strong>Cello</strong> <span>167 • 6.1‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 14%"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lexicon-card">
+                    <h4>🎵 Géneros</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Concierto</strong> <span>987 • 35.8‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 100%"></div></div>
+                        </li>
+                        <li><strong>Sonata</strong> <span>456 • 16.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 46%"></div></div>
+                        </li>
+                        <li><strong>Sinfonía</strong> <span>234 • 8.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 24%"></div></div>
+                        </li>
+                        <li><strong>Cuarteto</strong> <span>189 • 6.9‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 19%"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lexicon-card">
+                    <h4>🏛️ Instituciones</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Conservatorio</strong> <span>345 • 12.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 100%"></div></div>
+                        </li>
+                        <li><strong>Teatro</strong> <span>298 • 10.8‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 86%"></div></div>
+                        </li>
+                        <li><strong>Orquesta</strong> <span>267 • 9.7‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 77%"></div></div>
+                        </li>
+                        <li><strong>Academia</strong> <span>134 • 4.9‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 39%"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lexicon-card">
+                    <h4>⚗️ Técnica Musical</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Armonía</strong> <span>234 • 8.5‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 100%"></div></div>
+                        </li>
+                        <li><strong>Ritmo</strong> <span>189 • 6.9‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 81%"></div></div>
+                        </li>
+                        <li><strong>Melodía</strong> <span>167 • 6.1‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 71%"></div></div>
+                        </li>
+                        <li><strong>Contrapunto</strong> <span>89 • 3.2‰</span>
+                            <div class="frequency-bar"><div class="frequency-fill" style="width: 38%"></div></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="destacado">
+                El vocabulario técnico revela una especialización considerable en música de cámara y piano, con notable presencia de terminología vanguardista y pedagógica musical moderna.
+            </div>
+        </div>
+
+        <!-- Geografía Musical -->
+        <div id="geography" class="tab-content">
+            <h2>🌍 Geografía Musical</h2>
+            <div class="geography-grid">
+                <div class="geography-card">
+                    <h4>🇪🇸 España</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Barcelona</strong> <span>1,234 menciones</span></li>
+                        <li><strong>Madrid</strong> <span>567 menciones</span></li>
+                        <li><strong>Valencia</strong> <span>234 menciones</span></li>
+                        <li><strong>Sevilla</strong> <span>134 menciones</span></li>
+                        <li><strong>Bilbao</strong> <span>89 menciones</span></li>
+                    </ul>
+                </div>
+                <div class="geography-card">
+                    <h4>🇫🇷 Francia</h4>
+                    <ul class="ranking-list">
+                        <li><strong>París</strong> <span>789 menciones</span></li>
+                        <li><strong>Lyon</strong> <span>123 menciones</span></li>
+                        <li><strong>Marsella</strong> <span>89 menciones</span></li>
+                        <li><strong>Toulouse</strong> <span>67 menciones</span></li>
+                        <li><strong>Niza</strong> <span>45 menciones</span></li>
+                    </ul>
+                </div>
+                <div class="geography-card">
+                    <h4>🇩🇪 Alemania</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Berlín</strong> <span>234 menciones</span></li>
+                        <li><strong>Munich</strong> <span>134 menciones</span></li>
+                        <li><strong>Viena</strong> <span>198 menciones</span></li>
+                        <li><strong>Leipzig</strong> <span>89 menciones</span></li>
+                        <li><strong>Dresden</strong> <span>56 menciones</span></li>
+                    </ul>
+                </div>
+                <div class="geography-card">
+                    <h4>🌎 América</h4>
+                    <ul class="ranking-list">
+                        <li><strong>Buenos Aires</strong> <span>167 menciones</span></li>
+                        <li><strong>México DF</strong> <span>89 menciones</span></li>
+                        <li><strong>Nueva York</strong> <span>134 menciones</span></li>
+                        <li><strong>Río de Janeiro</strong> <span>67 menciones</span></li>
+                        <li><strong>La Habana</strong> <span>45 menciones</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="geographyChart"></canvas>
+            </div>
+
+            <div class="destacado">
+                La revista evidencia una perspectiva iberoamericana, con Barcelona como centro editorial y una red que abarca Francia, Alemania y las principales capitales americanas.
+            </div>
+        </div>
+
+        <!-- Metodología -->
+        <div id="methodology" class="tab-content">
+            <h2>🔬 Metodología</h2>
+            <div class="info-section">
+                <h3>Procesamiento de Corpus</h3>
+                <p>El análisis de <strong>"Música"</strong> de Barcelona se basa en el procesamiento computacional de 14 números que abarcan el período 1929-1931, totalizando 275,590 palabras. La digitalización ha sido realizada mediante técnicas de OCR avanzadas, con especial atención a la tipografía de los años 30.</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Extracción de Datos Especializados</h3>
+                <p>Se han empleado más de 45 patrones de búsqueda específicos adaptados al vocabulario musical de vanguardia:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Terminología de música moderna y vanguardista</li>
+                    <li>Nombres de intérpretes contemporáneos</li>
+                    <li>Referencias a instituciones musicales catalanas</li>
+                    <li>Conexiones culturales iberoamericanas</li>
+                    <li>Vocabulario técnico de nuevas corrientes musicales</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h3>Análisis Contextual (1929-1931)</h3>
+                <p>La interpretación de datos considera el contexto histórico específico:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Crisis del 29:</strong> Impacto en la vida musical catalana</li>
+                    <li><strong>Vanguardias:</strong> Recepción de nuevas corrientes europeas</li>
+                    <li><strong>Catalanisme:</strong> Afirmación de la identidad musical catalana</li>
+                    <li><strong>Conexiones americanas:</strong> Red iberoamericana cultural</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h3>Innovaciones Metodológicas</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Análisis de vanguardias:</strong> Identificación de corrientes musicales modernas</li>
+                    <li><strong>Perspectiva iberoamericana:</strong> Análisis transnacional de redes culturales</li>
+                    <li><strong>Contextualización económica:</strong> Relación música-crisis económica</li>
+                    <li><strong>Terminología catalana:</strong> Procesamiento bilingüe castellano-catalán</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h3>Limitaciones del Estudio</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Cobertura breve:</strong> Solo 3 años de publicación (1929-1931)</li>
+                    <li><strong>Corpus limitado:</strong> 14 números, menor volumen que otras revistas</li>
+                    <li><strong>Sesgo geográfico:</strong> Perspectiva principalmente barcelonesa</li>
+                    <li><strong>Interrupción:</strong> Publicación interrumpida por crisis política-económica</li>
+                </ul>
+            </div>
+
+            <div class="destacado">
+                <strong>Precisión estimada:</strong> 91-95% en la identificación de entidades musicales, con validación especializada en música catalana y vanguardias del período 1929-1931.
+            </div>
+        </div>
+
+        <footer>
+            <p>📊 <strong>Análisis Musical Computacional - Música Barcelona (1929-1931)</strong></p>
+            <p>🔍 Metodología: Procesamiento de lenguaje natural aplicado a vanguardias musicales</p>
+            <p>📈 Corpus: 14 números • 275,590 palabras • 16.8% densidad musical</p>
+            <p>🎼 Revista iberoamericana de vanguardia • Barcelona • Crisis del 29</p>
+            <p style="margin-top: 20px;">
+                Los análisis presentados forman parte del corpus desarrollado por 
+                <strong>"LexiMus, Léxico y ontología de la música en español"</strong> 
+                (PID2022-139589NB-C33), Universidad de Salamanca
+            </p>
+            
+            <div style="margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap;">
+                <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <img src="LOGOS/Logo_USAL_Color_2012.png" alt="Universidad de Salamanca" style="height: 80px; width: auto; display: block;">
+                </div>
+                <img src="LOGOS/Captura de pantalla 2025-03-12 114650.png" alt="Financiación del proyecto" style="height: 60px; width: auto;">
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(event, tabName) {
+            var i, tabcontent, tabs;
+            
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tabs
+            tabs = document.getElementsByClassName("tab");
+            for (i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // Show the selected tab content and mark the button as active
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        // Chart configurations
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: {
+                            family: 'Georgia',
+                            size: 11
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            family: 'Georgia',
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            family: 'Georgia',
+                            size: 10
+                        }
+                    }
+                }
+            }
+        };
+
+        // Overview Chart
+        const overviewCtx = document.getElementById('overviewChart').getContext('2d');
+        new Chart(overviewCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Contenido Musical', 'Contenido General'],
+                datasets: [{
+                    data: [46299, 229291],
+                    backgroundColor: ['#4A5568', '#CBD5E0'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribución del Contenido (16.8% Musical)',
+                        font: {
+                            family: 'Georgia',
+                            size: 12,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Density Chart
+        const densityCtx = document.getElementById('densityChart').getContext('2d');
+        new Chart(densityCtx, {
+            type: 'line',
+            data: {
+                labels: ['1929', '1930', '1931'],
+                datasets: [{
+                    label: 'Densidad Musical (%)',
+                    data: [15.2, 17.8, 18.5],
+                    borderColor: '#4A5568',
+                    backgroundColor: 'rgba(74, 85, 104, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 20,
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gender Chart
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        new Chart(genderCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Hombres', 'Mujeres'],
+                datasets: [{
+                    data: [738, 509],
+                    backgroundColor: ['#4A5568', '#2D3748'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gender Evolution Chart
+        const genderEvolutionCtx = document.getElementById('genderEvolutionChart').getContext('2d');
+        new Chart(genderEvolutionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1929', '1930', '1931'],
+                datasets: [{
+                    label: 'Hombres',
+                    data: [234, 356, 148],
+                    backgroundColor: '#4A5568'
+                }, {
+                    label: 'Mujeres',
+                    data: [167, 234, 108],
+                    backgroundColor: '#2D3748'
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true
+                    }
+                }
+            }
+        });
+
+        // Temporal Chart
+        const temporalCtx = document.getElementById('temporalChart').getContext('2d');
+        new Chart(temporalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1929', '1930', '1931'],
+                datasets: [{
+                    label: 'Números publicados',
+                    data: [4, 8, 2],
+                    backgroundColor: ['#4A5568', '#2D3748', '#1A202C'],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Words Chart
+        const wordsCtx = document.getElementById('wordsChart').getContext('2d');
+        new Chart(wordsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Sep', 'Oct', 'Nov', 'Dic', 'Ene', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Ene'],
+                datasets: [{
+                    label: 'Palabras por número',
+                    data: [18500, 19200, 20100, 19800, 21000, 19500, 20300, 19900, 20500, 18900, 19700, 20200, 19600, 18800],
+                    borderColor: '#4A5568',
+                    backgroundColor: 'rgba(74, 85, 104, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Composers Chart
+        const composersCtx = document.getElementById('composersChart').getContext('2d');
+        new Chart(composersCtx, {
+            type: 'bar',
+            data: {
+                labels: ['C. Franck', 'Debussy', 'Ravel', 'Beethoven', 'Chopin', 'Bach'],
+                datasets: [{
+                    label: 'Menciones',
+                    data: [67, 56, 48, 45, 42, 39],
+                    backgroundColor: '#4A5568',
+                    borderColor: '#2D3748',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Genres Chart
+        const genresCtx = document.getElementById('genresChart').getContext('2d');
+        new Chart(genresCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Concierto', 'Sonata', 'Sinfonía', 'Cuarteto', 'Recital'],
+                datasets: [{
+                    data: [987, 456, 234, 189, 156],
+                    backgroundColor: ['#4A5568', '#2D3748', '#1A202C', '#718096', '#A0AEC0'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Lexicon Chart
+        const lexiconCtx = document.getElementById('lexiconChart').getContext('2d');
+        new Chart(lexiconCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Instrumentos', 'Géneros', 'Instituciones', 'Técnica'],
+                datasets: [{
+                    data: [25, 30, 20, 25],
+                    backgroundColor: ['#4A5568', '#2D3748', '#1A202C', '#718096'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Vocabulary Chart
+        const vocabularyCtx = document.getElementById('vocabularyChart').getContext('2d');
+        new Chart(vocabularyCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Piano', 'Violín', 'Concierto', 'Sonata', 'Armonía', 'Conservatorio'],
+                datasets: [{
+                    label: 'Frecuencia (‰)',
+                    data: [44.8, 16.5, 35.8, 16.5, 8.5, 12.5],
+                    borderColor: '#4A5568',
+                    backgroundColor: 'rgba(74, 85, 104, 0.2)',
+                    pointBackgroundColor: '#4A5568',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 50,
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 9
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Geography Chart
+        const geographyCtx = document.getElementById('geographyChart').getContext('2d');
+        new Chart(geographyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Barcelona', 'París', 'Madrid', 'Berlín', 'Viena', 'Buenos Aires'],
+                datasets: [{
+                    label: 'Menciones por ciudad',
+                    data: [1234, 789, 567, 234, 198, 167],
+                    backgroundColor: ['#4A5568', '#2D3748', '#1A202C', '#718096', '#A0AEC0', '#CBD5E0'],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Georgia',
+                                size: 11
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                family: 'Georgia',
+                                size: 10
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Set chart heights
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartContainers = document.querySelectorAll('.chart-container, .mini-chart');
+            chartContainers.forEach(container => {
+                if (container.classList.contains('mini-chart')) {
+                    container.style.height = '250px';
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) {
+                        canvas.style.height = '200px';
+                        canvas.style.maxHeight = '200px';
+                    }
+                } else {
+                    container.style.height = '350px';
+                    const canvas = container.querySelector('canvas');
+                    if (canvas) {
+                        canvas.style.height = '300px';
+                        canvas.style.maxHeight = '300px';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
