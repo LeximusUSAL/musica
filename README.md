@@ -1,6 +1,6 @@
-# Análisis Musical de "Crónica de la Música" (1878-1882)
+# Análisis Musical de la revista "Música"
 
-Una aplicación web interactiva para el análisis de contenido musical de **"Crónica de la Música"**, el segundo gran periódico musical español, dirigido por Andrés Vidal y Llimona durante la época de consolidación del periodismo musical especializado (1878-1882).
+Una aplicación web interactiva para el análisis de contenido musical de **"Música"**, el segundo gran periódico musical español, dirigido por Andrés Vidal y Llimona durante la época de consolidación del periodismo musical especializado (1878-1882).
 
 ## 🌐 Demo en Vivo
 
@@ -169,13 +169,26 @@ Este análisis aporta:
 - **Análisis léxico** de la consolidación del vocabulario operístico en español
 - **Perspectiva histórica** del desarrollo del periodismo musical especializado
 
-## 📄 Licencia
-
-Este proyecto está desarrollado para fines de investigación académica. Los datos utilizados pertenecen al dominio público (publicaciones 1878-1882).
 
 ## 👥 Contribución
 
 Proyecto desarrollado en el marco de investigación musicológica. Para consultas académicas o colaboraciones, contactar con el equipo del proyecto LexiMus.
+
+## 📞 Contacto
+
+Para consultas académicas o colaboraciones:
+- **Institución**: Universidad de Salamanca
+- **Proyecto**: LexiMus https://leximus.es/
+- **Repositorio**: [GitHub](https://github.com/leximususal/principal)
+
+## 📜 Licencia y Citación
+
+Si utilizas este trabajo en tu investigación, por favor cita:
+```
+Análisis Musical de revista "Música". 
+Proyecto LexiMus, Universidad de Salamanca. 
+Disponible en: [https://leximususal.github.io/musica/]
+---
 
 ---
 
