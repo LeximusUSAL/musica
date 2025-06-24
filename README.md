@@ -4,7 +4,7 @@ Una aplicación web interactiva para el análisis de contenido musical de **"Cr�
 
 ## 🌐 Demo en Vivo
 
-[Ver análisis en GitHub Pages](https://mariapalaciosnieto.github.io/musica/)
+[Ver análisis en GitHub Pages](https://leximususal.github.io/musica/)
 
 ## 📊 Características
 
